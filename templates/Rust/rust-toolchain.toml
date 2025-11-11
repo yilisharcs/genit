@@ -1,0 +1,7 @@
+# rust-toolchain.toml - Toolchain overrides file
+# This file declares the Rust toolchain used by the project.
+# Documentation: https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file
+
+[toolchain]
+channel = "stable"
+components = ["rust-analyzer"]

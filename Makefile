@@ -1,0 +1,2 @@
+all:
+	@./genit.nu

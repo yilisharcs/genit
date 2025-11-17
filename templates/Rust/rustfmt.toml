@@ -1,0 +1,5 @@
+tab_spaces = 8
+
+unstable_features = true
+imports_granularity = "One"
+imports_layout = "Vertical"

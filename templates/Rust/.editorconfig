@@ -11,11 +11,12 @@ trim_trailing_whitespace = true
 insert_final_newline = false
 trim_trailing_whitespace = false
 
-[*.lua]
+[*.{lua,rs}]
+indent_size = 8
 indent_style = space
 max_line_length = 100
 
-[*.{md,rs}]
+[*.md]
 indent_size = 4
 indent_style = space
 

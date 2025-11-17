@@ -3,5 +3,5 @@
 # Documentation: https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file
 
 [toolchain]
-channel = "stable"
+channel = "nightly-2025-11-15" # "stable"
 components = ["rust-analyzer"]

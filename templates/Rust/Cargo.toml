@@ -28,3 +28,7 @@ inherits = "release"
 opt-level = "s"
 strip = true
 panic = "abort"
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"

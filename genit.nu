@@ -15,19 +15,20 @@ def main [] {
 
         let name = (input $"(ansi green_bold)=>(ansi reset) Project Name: (ansi yellow_bold)")
         let repo = ($name | str replace --all --regex '\s+' '-')        # kebab-case eats dots, not ideal
+        let rdir = ([".." $repo] | path join)
         let pkg  = ($repo | str downcase)
 
         let desc = (input $"(ansi green_bold)=>(ansi reset) Project Description: (ansi yellow_bold)")
         print --no-newline (ansi reset)
 
-        if not ($repo | path exists) {
-                cp --recursive --no-clobber --preserve [ mode ] ([$root $template] | path join) $repo
+        if not ($rdir | path exists) {
+                cp --recursive --no-clobber --preserve [ mode ] ([$root $template] | path join) $rdir
         } else {
-                print $"(ansi red_bold) Error: (ansi yellow_bold)./($repo) (ansi red_bold)exists.(ansi reset)"
+                print $"(ansi red_bold) Error: (ansi yellow_bold)./($rdir) (ansi red_bold)exists.(ansi reset)"
                 exit
         }
 
-        cd $repo
+        cd $rdir
 
         # NOTE: We need to ignore the .gitignore rules to track the templates correctly
         mv .gitignore.dist .gitignore

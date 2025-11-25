@@ -71,6 +71,4 @@ def main [] {
         git commit -m "feat: initial commit" | ignore
 
         print $" (ansi green_bold)::(ansi reset) Created new project at (ansi green_bold)(pwd)(ansi reset)"
-
-        # direnv allow
 }

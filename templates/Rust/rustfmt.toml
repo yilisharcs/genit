@@ -1,5 +1,6 @@
 tab_spaces = 8
 
 unstable_features = true
-imports_granularity = "One"
+group_imports = "StdExternalCrate"
+imports_granularity = "Module"
 imports_layout = "Vertical"

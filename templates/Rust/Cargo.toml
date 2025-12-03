@@ -13,22 +13,13 @@ license = "GPL-3.0-or-later"
 thiserror = "2.0.17"
 
 [profile]
-[profile.dev]
-debug = false
-opt-level = 1
-
-[profile.dev.package."*"]
-opt-level = 3
-
-[profile.release]
+[profile.tiny]
+inherits = "release"
 codegen-units = 1
 lto = "fat"
-
-[profile.release-tiny]
-inherits = "release"
 opt-level = "s"
-strip = true
 panic = "abort"
+strip = true
 
 [lints.clippy]
 # Performance

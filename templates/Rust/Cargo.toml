@@ -5,16 +5,21 @@ edition = "2024"
 description = "GENIT_DESC"
 repository = "https://github.com/yilisharcs/GENIT_REPO"
 license = "GPL-3.0-or-later"
-# keywords = []
-# categories = []
-# include = []
+keywords = [
+        #
+]
+categories = [
+        #
+]
+include = [
+        "LICENSE",
+        "**/*.rs",
+]
 
 [dependencies]
-thiserror = "2.0.17"
 
 [profile]
-[profile.tiny]
-inherits = "release"
+[profile.release]
 codegen-units = 1
 lto = "fat"
 opt-level = "s"

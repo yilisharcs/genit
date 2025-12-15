@@ -19,14 +19,6 @@ TBD
 
 Report issues at: <https://github.com/yilisharcs/GENIT_REPO/issues>
 
-# AUTHOR
-
-yilisharcs <yilisharcs@gmail.com>
-
-# SEE ALSO
-
-Website: <https://github.com/yilisharcs/GENIT_REPO>
-
 # LICENSE
 
 Copyright (C) 2025 yilisharcs <yilisharcs@gmail.com>

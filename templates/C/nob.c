@@ -2,50 +2,16 @@
 #define NOB_STRIP_PREFIX
 #include "nob.h"
 
-// ================================================================================================
-// CONFIGURATION
-// ================================================================================================
-
-#define CC   "cc"                     // Compiler alias for any system. The default is usually good enough.
+#define CC   "cc"        // Compiler alias for any system. The default is usually good enough.
 #define EXT  ".c"
 #define SRCDIR  "src"
 
-// Shared flags for all profiles
-// NOTE: These flags were tested with gcc. If you plan to use another compiler, like say, clang or
-//       tcc, it might be a good idea to make sure they are valid for that compiler.
-static const char *const cflags[] = {
-        "-Wall",                      // Standard warnings
-        "-Wextra",                    // Even more warnings
-        "-Wshadow",                   // Warn when a variable shadows another
-        "-Wformat=2",                 // Check printf/scanf for type mismatches and null arguments
-        "-Wundef",                    // Warn if an undefined macro is used in #if
-        "-Wwrite-strings",            // Treat string literals as const `char*`
-        "-Wimplicit-fallthrough",     // Warn if switch cases fall through without comment
-        "-fno-strict-aliasing",       // Prevent dangerous pointer assumptions
-        "-Wstrict-prototypes",        // Force `(void)` for empty parameter lists
-        "-Wmissing-prototypes",       // Force global functions to be declared before use
-};
-
-// Shared flags for RELEASE and TINY profiles
-static const char *const pflags[] = {
-        "-DNDEBUG",                   // Disable assertions for performance
-        "-Werror",                    // Treat warnings as errors for production
-        "-flto",                      // Enable link-time optimization
-        "-ffunction-sections",        // Put each function in its own bucket for the linker
-        "-fdata-sections",            // Put each piece of data in its own bucket
-        "-Wl,--gc-sections",          // Tell the linker to throw away dead code (unused buckets)
-        "-Wl,--as-needed",            // Only link libraries that are actually used
-};
-
-// ================================================================================================
-
-
 // Subcommands supported by this build system
 typedef enum {
-        CMD_BUILD,   // Compile the project
-        CMD_RUN,     // Compile and execute
-        CMD_CLEAN,   // Remove build artifacts
-        CMD_UNKNOWN, // INVALID SUBCOMMAND. LEARN TO READ.
+        CMD_BUILD,    // Compile the project
+        CMD_RUN,      // Compile and execute
+        CMD_CLEAN,    // Remove build artifacts
+        CMD_UNKNOWN,  // INVALID SUBCOMMAND. LEARN TO READ.
 } Subcommand;
 
 // Converts a raw command-line argument string into a Subcommand enum.
@@ -120,16 +86,36 @@ bool build_project(const char *nob_path, Profile profile) {
                 Cmd cmd = { 0 };      // Initialize the command builder
                 cmd_append(&cmd, CC);
 
-                // Apply shared cflags
-                for (size_t i = 0; i < NOB_ARRAY_LEN(cflags); ++i) {
-                        cmd_append(&cmd, cflags[i]);
-                }
+                // Apply shared flags for all profiles
+                // NOTE: These flags were tested with gcc. If you plan to use another compiler like
+                //       say, clang or tcc, it might be a good idea to make sure they are valid for
+                //       that compiler.
+                cmd_append(
+                        &cmd
+                        "-Wall",                      // Standard warnings
+                        "-Wextra",                    // Even more warnings
+                        "-Wshadow",                   // Warn when a variable shadows another
+                        "-Wformat=2",                 // Check printf/scanf for type mismatches and null arguments
+                        "-Wundef",                    // Warn if an undefined macro is used in #if
+                        "-Wwrite-strings",            // Treat string literals as const `char*`
+                        "-Wimplicit-fallthrough",     // Warn if switch cases fall through without comment
+                        "-fno-strict-aliasing",       // Prevent pointer assumptions
+                        "-Wstrict-prototypes",        // Force `(void)` for empty parameter lists
+                        "-Wmissing-prototypes",       // Force global functions to be declared before use
+                );
 
-                // Apply shared pflags for performance
+                // Apply shared performance flags
                 if (profile == PROFILE_RELEASE || profile == PROFILE_TINY) {
-                        for (size_t i = 0; i < NOB_ARRAY_LEN(pflags); ++i) {
-                                cmd_append(&cmd, pflags[i]);
-                        }
+                        cmd_append(
+                                &cmd,
+                                "-DNDEBUG",                   // Disable assertions
+                                "-Werror",                    // Treat warnings as errors for production
+                                "-flto",                      // Enable link-time optimization
+                                "-ffunction-sections",        // Put each function in its own bucket for the linker
+                                "-fdata-sections",            // Put each piece of data in its own bucket
+                                "-Wl,--gc-sections",          // Tell the linker to throw away dead code (unused buckets)
+                                "-Wl,--as-needed",            // Only link libraries that are actually used
+                        );
                 }
 
                 // Apply profile-specific flags
@@ -139,7 +125,10 @@ bool build_project(const char *nob_path, Profile profile) {
                         cmd_append(
                                 &cmd,
                                 "-O0",
-                                "-ggdb3"  // Maximum amount of debug information!
+                                "-ggdb3",                     // Maximum amount of debug information!
+                                "-fsanitize=address",         // Catch memory errors
+                                "-fsanitize=undefined",       // Catch undefined behavior
+                                "-fno-omit-frame-pointer",    // Better stack traces
                         );
                         break;
                 case PROFILE_RELEASE:

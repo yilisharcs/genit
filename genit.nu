@@ -13,10 +13,11 @@ def main [] {
         )
         print $"(ansi green_bold)=>(ansi reset) Selected: (ansi yellow_bold)($template)(ansi reset)"
 
-        let name = (input $"(ansi green_bold)=>(ansi reset) Project Name: (ansi yellow_bold)")
-        let repo = ($name | str replace --all --regex '\s+' '-')        # kebab-case eats dots, not ideal
-        let rdir = ([".." $repo] | path join)
-        let pkg  = ($repo | str downcase)
+        let name   = (input $"(ansi green_bold)=>(ansi reset) Project Name: (ansi yellow_bold)")
+        let repo   = ($name | str replace --all --regex '\s+' '-')        # kebab-case eats dots, not ideal
+        let rdir   = ([".." $repo] | path join)
+        let pkg    = ($repo | str downcase)
+        let snake  = ($repo | str snake-case)
 
         let desc = (input $"(ansi green_bold)=>(ansi reset) Project Description: (ansi yellow_bold)")
         print --no-newline (ansi reset)
@@ -41,11 +42,12 @@ def main [] {
                 | each {
                         if ($in | str contains "GENIT_") {
                                 $in
-                                | str replace --all "GENIT_NAME" $name
-                                | str replace --all "GENIT_REPO" $repo
-                                | str replace --all "GENIT_DESC" $desc
-                                | str replace --all "GENIT_PKG"  $pkg
-                                | str replace --all "GENIT_NVIM" ($pkg | str replace ".nvim" "")
+                                | str replace --all "GENIT_NAME"   $name
+                                | str replace --all "GENIT_REPO"   $repo
+                                | str replace --all "GENIT_DESC"   $desc
+                                | str replace --all "GENIT_PKG"    $pkg
+                                | str replace --all "GENIT_SNAKE"  $snake
+                                | str replace --all "GENIT_NVIM"   ($pkg | str replace ".nvim" "")
                         } else {
                                 return $in
                         }
@@ -66,6 +68,11 @@ def main [] {
                 make doc | ignore
         } else if $template == "Lua" {
                 mv src/GENIT_PKG.lua $"src/($pkg).lua"
+        }
+
+        if $template == "Zig" {
+                zig init
+                rm src/root.zig
         }
 
         git init | ignore; git add .

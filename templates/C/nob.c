@@ -91,7 +91,7 @@ bool build_project(const char *nob_path, Profile profile) {
                 //       say, clang or tcc, it might be a good idea to make sure they are valid for
                 //       that compiler.
                 cmd_append(
-                        &cmd
+                        &cmd,
                         "-Wall",                      // Standard warnings
                         "-Wextra",                    // Even more warnings
                         "-Wshadow",                   // Warn when a variable shadows another

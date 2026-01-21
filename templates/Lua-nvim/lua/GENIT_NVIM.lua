@@ -1,6 +1,6 @@
 --- *GENIT_PKG.txt*                                           GENIT_DESC
 ---
---- Apache License 2.0 Copyright (c) 2025 yilisharcs
+--- Apache License 2.0 Copyright (c) 2026 yilisharcs
 
 ---                               Table of Contents
 ---

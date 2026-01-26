@@ -70,7 +70,7 @@ def main [] {
                 mv src/GENIT_PKG.lua $"src/($pkg).lua"
         }
 
-        if $template == "Zig" {
+        if $template =~ "Zig" {
                 zig init
                 rm src/root.zig
         }

@@ -2,7 +2,7 @@
 
 def main [] {
         const script = (path self)
-        const root = ([ ($script | path dirname) templates ] | path join)
+        const root = ([($script | path dirname) templates] | path join)
 
         let template = (
                 glob --depth=1 --no-file $"($root)/*"
@@ -72,9 +72,13 @@ def main [] {
                 mv src/GENIT_PKG.lua $"src/($pkg).lua"
         }
 
-        if $template =~ "Zig" {
+        if $template =~ "Zig" and $template !~ "Wasm4" {
                 zig init
                 rm src/root.zig
+        }
+
+        if $template =~ "Zig" and $template =~ "Wasm4" {
+                mv GENIT_PKG.md $"($pkg).md"
         }
 
         git init | ignore; git add .

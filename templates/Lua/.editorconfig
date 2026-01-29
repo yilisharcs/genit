@@ -7,7 +7,7 @@ indent_size = 8
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.bin]
+[*.{bin,wasm}]
 insert_final_newline = false
 trim_trailing_whitespace = false
 

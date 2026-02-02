@@ -1,0 +1,14 @@
+set shell               := ["nu", "-c"] # For single-line execution
+set script-interpreter  := ["nu"]       # For bundled execution
+
+run:
+        cargo run
+
+check $RUSTFLAGS="-Awarnings":
+        cargo check
+
+clean:
+        rm -rf target/
+
+doc:
+        ./scripts/manpage_rust_vars.rs

@@ -1,0 +1,22 @@
+set shell               := ["nu", "-c"] # For single-line execution
+set script-interpreter  := ["nu"]       # For bundled execution
+
+build:
+        zig build
+
+# NOTE: `run({...})` evaluates to `run-native` or `run`
+#
+# Run the wasm cartridge
+[arg("target", pattern="web|native")]
+run target="web": build
+        w4 run(if "{{target}}" == "native" { "-native" }) zig-out/bin/cart.wasm
+
+open: run
+        job spawn { xdg-open http://localhost:4444 }
+
+bundle:
+        w4 bundle zig-out/bin/cart.wasm --title "GENIT_NAME" --windows GENIT_PKG-windows.exe --mac GENIT_PKG-mac --linux GENIT_PKG-linux --html GENIT_PKG.html
+
+clean:
+        rm -rf .zig-cache/
+        rm -rf zig-out/

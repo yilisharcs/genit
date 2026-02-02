@@ -1,0 +1,12 @@
+set shell               := ["nu", "-c"] # For single-line execution
+set script-interpreter  := ["nu"]       # For bundled execution
+
+build:
+        zig build
+
+run:
+        zig build run --summary none
+
+clean:
+        rm -rf .zig-cache/
+        rm -rf zig-out/
